@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Love ❤️</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    min-height:100vh;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#ffd6e5,#fff0f5);
+    color:#6b2445;
+    overflow-x:hidden;
+}
+
+.page{
+    min-height:100vh;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    padding:25px;
+}
+
+.page.active{
+    display:flex;
+    animation:fade .7s ease;
+}
+
+.card{
+    width:100%;
+    max-width:600px;
+    text-align:center;
+    background:rgba(255,255,255,.75);
+    border-radius:35px;
+    padding:40px 25px;
+    box-shadow:0 15px 50px rgba(170,60,100,.2);
+    backdrop-filter:blur(12px);
+}
+
+h1{
+    font-size:45px;
+    color:#d6336c;
+    margin-bottom:20px;
+}
+
+h2{
+    font-size:32px;
+    color:#d6336c;
+    margin-bottom:20px;
+}
+
+p{
+    font-size:18px;
+    line-height:2;
+    margin:15px 0;
+}
+
+button{
+    border:0;
+    background:#ff5c91;
+    color:white;
+    padding:15px 30px;
+    border-radius:50px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(255,92,145,.3);
+    transition:.3s;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+.start-heart{
+    font-size:80px;
+    margin-bottom:20px;
+    animation:heartbeat 1.3s infinite;
+}
+
+/* اللعبة */
+
+.score{
+    font-size:28px;
+    font-weight:bold;
+    margin:20px;
+    color:#d6336c;
+}
+
+.game-heart{
+    display:inline-block;
+    font-size:85px;
+    cursor:pointer;
+    user-select:none;
+    animation:heartbeat 1s infinite;
+}
+
+.game-heart:active{
+    transform:scale(.8);
+}
+
+/* الجائزة */
+
+.prize{
+    font-size:80px;
+    margin:20px;
+    animation:bounce 1s infinite alternate;
+}
+
+.love-number{
+    font-size:clamp(25px,7vw,50px);
+    font-weight:bold;
+    color:#d6336c;
+    margin:25px 0;
+    word-break:break-word;
+}
+
+/* الهدية */
+
+.gift{
+    font-size:85px;
+    margin-bottom:20px;
+    animation:bounce 1s infinite alternate;
+}
+
+.gift-heart{
+    display:inline-block;
+    font-size:100px;
+    cursor:pointer;
+    animation:heartbeat .9s infinite;
+}
+
+/* الرسالة */
+
+.letter{
+    text-align:right;
+    background:#fff7fa;
+    padding:25px;
+    border-radius:25px;
+    border:2px solid #ffd0df;
+}
+
+.letter p{
+    font-size:17px;
+}
+
+.signature{
+    text-align:center;
+    color:#d6336c;
+    font-size:22px;
+    font-weight:bold;
+    margin-top:25px;
+}
+
+/* القلوب */
+
+.floating{
+    position:fixed;
+    bottom:-50px;
+    pointer-events:none;
+    animation:floatUp 6s linear forwards;
+    z-index:100;
+}
+
+/* الحركات */
+
+@keyframes heartbeat{
+
+    0%,100%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.18);
+    }
+}
+
+@keyframes bounce{
+
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(-12px);
+    }
+}
+
+@keyframes fade{
+
+    from{
+        opacity:0;
+        transform:translateY(25px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes floatUp{
+
+    0%{
+        transform:translateY(0) rotate(0);
+        opacity:0;
+    }
+
+    15%{
+        opacity:1;
+    }
+
+    100%{
+        transform:translateY(-110vh) rotate(360deg);
+        opacity:0;
+    }
+}
+
+@media(max-width:500px){
+
+    h1{
+        font-size:38px;
+    }
+
+    h2{
+        font-size:27px;
+    }
+
+    .card{
+        padding:35px 18px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     المرحلة الأولى
+========================= -->
+
+<section class="page active" id="page1">
+
+<div class="card">
+
+<div class="start-heart">❤️</div>
+
+<h1>هيا نبدأ</h1>
+
+<p>
+لعبة سريعة 😏❤️
+<br>
+إذا وصل السكور إلى <b>3</b> بتفوزي!
+</p>
+
+<button onclick="startGame()">
+ابدئي اللعبة 🎮
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================
+     اللعبة
+========================= -->
+
+<section class="page" id="page2">
+
+<div class="card">
+
+<h2>جاهزة؟ ❤️</h2>
+
+<p>
+اضغطي على القلب
+<br>
+واجمعي 3 نقاط!
+</p>
+
+<div class="score">
+السكور: <span id="score">0</span> / 3
+</div>
+
+<div
+class="game-heart"
+onclick="clickHeart()">
+❤️
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================
+     الجائزة
+========================= -->
+
+<section class="page" id="page3">
+
+<div class="card">
+
+<div class="prize">🎉</div>
+
+<h1>
+مبرووووك!
+</h1>
+
+<p>
+ربحتي الجائزة! ❤️
+</p>
+
+<button onclick="showLove()">
+اضغطي للكشف 🎁
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================
+     مقدار الحب
+========================= -->
+
+<section class="page" id="page4">
+
+<div class="card">
+
+<div class="start-heart">
+❤️
+</div>
+
+<h2>
+شدة حبي لك
+</h2>
+
+<div class="love-number">
+1000000000000000000000000000
+</div>
+
+<p>
+وبصراحة... حتى هذا الرقم قليل عليكِ. ❤️
+</p>
+
+<button onclick="showGift()">
+في هدية ثانية 🎁
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================
+     الهدية
+========================= -->
+
+<section class="page" id="page5">
+
+<div class="card">
+
+<div class="gift">
+🎁
+</div>
+
+<h2>
+عندي هدية لك 🎁
+</h2>
+
+<p>
+اضغطي على ❤️
+<br>
+لتحصلي على الهدية.
+</p>
+
+<div
+class="gift-heart"
+onclick="openLetter()">
+❤️
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================
+     الرسالة
+========================= -->
+
+<section class="page" id="page6">
+
+<div class="card">
+
+<h2>
+إلى حبيبة قلبي،
+<br>
+إلى دنيتي ❤️
+</h2>
+
+<div class="letter">
+
+<p>
+
+يمكن ما أعرف دائمًا كيف أعبّر عن اللي بداخلي،
+بس اليوم حبيت أخلي كل كلمة تحكي عن مكانتك عندي.
+
+أنتِ مو مجرد شخص أحبه،
+أنتِ شخص وجوده بحياتي غيّر أشياء كثيرة فيني.
+صرتِ أول شخص يخطر ببالي لما أكون مبسوط،
+وأول شخص أتمنى أحكي معه لما يكون يومي سيئ.
+
+وأحيانًا بس أشوف اسمك على الشاشة،
+بتتغير ملامح وجهي بدون ما أحس. ❤️
+
+يمكن ما بحكي لك دائمًا قدّيش أنتِ مهمة بالنسبة إلي،
+بس الحقيقة إن مشاعري تجاهك أكبر بكثير من الكلام اللي بقدر أقوله.
+
+أنا أغار عليك،
+وأشتاق لك،
+وأحب اهتمامك فيني،
+وأحب حتى التفاصيل الصغيرة اللي يمكن أنتِ ما تنتبهي لها.
+
+وبصراحة؟
+
+أنا ما بدي أكون مجرد شخص مرّ بحياتك...
+
+<b>
+بدي أكون الشخص اللي لما تتذكريه بعد سنين،
+تبتسمي وتقولي:
+"كان يحبني بطريقة مختلفة." ❤️
+</b>
+
+وإذا سألتيني شو أمنيتي؟
+
+فهي بسيطة جدًا...
+
+أظل قريب منك،
+وأشوف ابتسامتك،
+وأكون سبب ولو صغير في سعادتك.
+
+وأخيرًا...
+
+<b>
+أحبك.
+مش حب كلمة وتنتهي،
+أحبك حبًا يجعلني أختارك كل مرة،
+حتى لو رجع فيني الزمن من البداية. ❤️
+</b>
+
+أتمنى تظلي دائمًا بخير،
+وتظلي تبتسمي،
+وتحققي كل شيء نفسك فيه.
+
+</p>
+
+<div class="signature">
+
+أحبك يا دنيتي. ❤️
+
+<br><br>
+
+صُنعت بكل حب ❤️
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<script>
+
+let score = 0;
+
+
+/* الانتقال بين الصفحات */
+
+function changePage(pageNumber){
+
+document.querySelectorAll(".page")
+.forEach(page=>{
+page.classList.remove("active");
+});
+
+document
+.getElementById("page"+pageNumber)
+.classList.add("active");
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+
+/* بداية اللعبة */
+
+function startGame(){
+
+score = 0;
+
+document.getElementById("score")
+.innerText = score;
+
+changePage(2);
+
+}
+
+
+/* الضغط على القلب */
+
+function clickHeart(){
+
+if(score >= 3){
+return;
+}
+
+score++;
+
+document.getElementById("score")
+.innerText = score;
+
+createHearts();
+
+if(score === 3){
+
+setTimeout(()=>{
+
+changePage(3);
+
+},500);
+
+}
+
+}
+
+
+/* كشف الحب */
+
+function showLove(){
+
+changePage(4);
+
+createHearts();
+
+}
+
+
+/* الهدية */
+
+function showGift(){
+
+changePage(5);
+
+}
+
+
+/* فتح الرسالة */
+
+function openLetter(){
+
+changePage(6);
+
+createHearts();
+
+}
+
+
+/* القلوب المتطايرة */
+
+function createHearts(){
+
+for(let i=0;i<18;i++){
+
+let heart =
+document.createElement("div");
+
+heart.className="floating";
+
+heart.innerText=
+["❤️","💗","💕","💖","💘"]
+[Math.floor(Math.random()*5)];
+
+heart.style.left=
+Math.random()*100+"%";
+
+heart.style.fontSize=
+(18+Math.random()*25)+"px";
+
+heart.style.animationDuration=
+(4+Math.random()*4)+"s";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>{
+heart.remove();
+},8000);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
